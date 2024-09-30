@@ -3,6 +3,10 @@ from datetime import datetime, timedelta
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+#ASSUMPTIONS 
+# - We assume we dont have intersecting tick interval data in different files
+
+
 #Class to represent OHLCV bars
 class OHLCV:
     def __init__(self, timestamp, open, high, low, close, volume):
@@ -75,17 +79,6 @@ def solution(file_path):
             res.append(curr_object)
             curr_object = OHLCV(timestamp, price, price, price, price, size)
             curr_interval += time_delta
-        
-    #Old single threaded code
-    # file_exists = os.path.isfile('output.csv')
-    # mode = 'a' if file_exists else 'w'
-
-    # with open('output.csv', mode, newline='') as out:
-    #     csv_writer = csv.writer(out)
-    #     if not file_exists:
-    #         csv_writer.writerow(['Timestamp', 'Open', 'High', 'Low', 'Close', 'Volume'])
-    #     for row in res:
-    #         csv_writer.writerow([row.timestamp, row.open, row.high, row.low, row.close, row.volume])
     return [[row.timestamp, row.open, row.high, row.low, row.close, row.volume] for row in res]
 
 
@@ -142,7 +135,6 @@ def sort_csv_by_timestamp(input_file, output_file):
 sort_csv_by_timestamp('output.csv', 'output_sorted.csv')
 
 
-#ASSUMPTIONS 
-# - We assume we dont have intersecting tick interval data in different files
+
 
 
